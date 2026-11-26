@@ -1,0 +1,47 @@
+[38;2;167;152;215m[49m[29m[28m[27m[25m[25m[22m[24m[22m[23mPlan synthetic-plan:
+[m# Synthetic plan
+
+[mRead **bold scope** with `inline code` and [a
+[mlink]([mhttps://example.com/docs[m).
+
+[m- Preserve approval checks.
+[m  - Review original source bytes.
+
+[m```ts
+[mconst retries = 2;
+[m```
+
+[m| Check | Result |
+[m| --- | --- |
+[m| Markdown | Formatted |
+[m| Approval | Separate |
+
+[m> Offline synthetic fixture only.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[38;2;126;136;142m[49m[29m[28m[27m[25m[25m[22m[24m[22m[23ma approve · c critique in Crit · m formatted · ↑↓
+[38;2;126;136;142m[49m[29m[28m[27m[25m[25m[22m[24m[22m[23mscroll · pgup/pgdn page · esc back[m

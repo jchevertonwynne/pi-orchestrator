@@ -1,0 +1,12 @@
+layout {
+    default_tab_template {
+        pane borderless=true size=1 {
+            plugin location="zellij:tab-bar"
+        }
+        pane
+        pane borderless=true size=2 {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="workers"
+}

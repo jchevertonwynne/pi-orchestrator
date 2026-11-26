@@ -1,0 +1,12 @@
+{
+  "name": "pi-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Opt-in local multi-agent orchestration for Pi and Zellij",
+  "engines": { "node": ">=24" },
+  "keywords": ["pi-package"],
+  "pi": { "extensions": ["./src/extension.ts"], "skills": ["./skills"] },
+  "peerDependencies": { "@earendil-works/pi-coding-agent": "^0.87.1", "@earendil-works/pi-ai": "^0.87.1", "@earendil-works/pi-tui": "^0.87.1" },
+  "scripts": { "test": "node --test test/*.test.mjs", "check": "npm test && node evals/validate.mjs" }
+}

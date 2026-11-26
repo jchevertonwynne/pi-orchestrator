@@ -1,0 +1,47 @@
+ orchestrator_task action="create"
+ id="synthetic-plan" title="Synthetic Markdown
+ review" planText="# Synthetic plan\...
+ {
+   "id": "synthetic-plan",
+   "title": "Synthetic Markdown review",
+   "state": "planned",
+   "planPath":
+ "<fixture>/run/plans/
+ synthetic-plan.md",
+   "planHash":
+ "ebede72abc1c4120ddc36fd8ed111f0bd343ef0b7ec7a0b
+ b3c038b92054d8289",
+   "dependencies": [],
+   "history": [
+     {
+       "state": "planned",
+ ... (6 more lines, ctrl+o to expand)
+
+
+ Offline fixture finished. Open /orchestrator,
+ then p. No task approval or implementation was
+ performed.
+
+──────────────────────────────────────────────────
+
+ Approve implementation scope?
+ synthetic-plan
+ Plan:
+ <fixture>/run/plans/s
+ ynthetic-plan.md
+ SHA256:
+ ebede72abc1c4120ddc36fd8ed111f0bd343ef0b7ec7a0bb
+ 3c038b92054d8289
+ Source: orchestrator board
+ This records your approval, not an agent
+ assertion.
+
+ → Yes
+   No
+
+ ↑↓ navigate  enter select  escape/ctrl+c cancel
+
+──────────────────────────────────────────────────
+<fixture>
+0.7%/200k (auto)   (plan-markdown-fixture) offline
+⚙ strict 0/0 shipped · 1 building

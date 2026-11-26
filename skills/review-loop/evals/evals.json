@@ -1,0 +1,86 @@
+{
+  "skill_name": "review-loop",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Synthetic dry run. I only typed /review-loop 42. It expanded to PR 42; threshold major; at most 3 fix rounds; reviewer model anthropic/claude-opus-5-5; fixer model openai-codex/gpt-6.1-sol. PR 42 is open on my eligible feat/x branch at H0, base main, same repository. The attached run uses request-scoped mode. Describe setup, the first round and where any fixes would stay. Do not execute anything.",
+      "expected_output": "Fetch and confirm the head equals H0, create non-shipping pr42-fix and pr42-review-0 tasks, seek plan-only TUI confirmation for eligible roots, and spawn a fresh reviewer at H0. Keep any fixes on the local fixer branch.",
+      "files": [],
+      "expectations": [
+        "Confirms the fetched PR head equals H0 before spawning anyone.",
+        "Creates the fix and review tasks with ships false; the command and PR reference do not request a push.",
+        "Proposes plan-only TUI confirmation for eligible roots without remote or ref, and never offers to push the local fixes.",
+        "Spawns the reviewer with model anthropic/claude-opus-5-5 passed explicitly, base H0 and the tier table in its prompt."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Synthetic dry run. Threshold major, cap 3. Round 0 review reports F1 blocker open, F2 major open, F3 minor open, F4 nit open. Describe the next step and the fixer's scope without executing anything.",
+      "expected_output": "Spawn a fresh fixer on pr42-fix with the Sol model at the reviewed commit, told to fix only F1 and F2, to dispute rather than skip findings it believes are wrong, to run checks and commit without pushing.",
+      "files": [],
+      "expectations": [
+        "Spawns the fixer with model openai-codex/gpt-6.1-sol passed explicitly.",
+        "Limits the fix scope to F1 and F2 and excludes F3 and F4.",
+        "Tells the fixer not to push, force or rebase the PR.",
+        "After the fixer's ready result, records its commit as the next review base and spawns a new reviewer rather than reusing the first one."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Synthetic dry run in a staged run. The human expressly asked to update an existing PR. Threshold major, cap 3. After fix round 3 the fresh reviewer still reports F7 major open. The PR head on GitHub still equals H0. No release grant exists. Describe what happens next without executing anything.",
+      "expected_output": "Stop at the cap and ask whether to run more rounds, land what is fixed or stop. If the human chooses to land, retain the staged PR release gate and verify the exact fast-forward candidate before any effect.",
+      "files": [],
+      "expectations": [
+        "Does not start a fourth fix round without the human's answer.",
+        "Uses ask_user with self-contained options covering more rounds, pushing the current fixes and stopping without a push.",
+        "Requires the exact staged pr grant through release-work; an ask_user answer is not that grant. Any push is a fast-forward to the PR head after rechecking the remote head and ancestry."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Synthetic dry run. Threshold blocker, cap 3. Round 0 review reports only F1 major and F2 nit, both open. Describe the outcome without executing anything.",
+      "expected_output": "No finding is at or above blocker, and no fix commit exists, so report the clean review with the counts per tier and stop without spawning a fixer or pushing.",
+      "files": [],
+      "expectations": [
+        "Treats major and nit as below a blocker threshold.",
+        "Spawns no fixer and requests no push.",
+        "Reports the remaining lower-tier findings to the human."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Synthetic dry run. /review-loop expanded to: local branch checked out in /repo; base origin's default branch; threshold major; at most 3 fix rounds; reviewer model anthropic/claude-opus-5-5; fixer model openai-codex/gpt-6.1-sol. In /repo, branch feat/a is checked out at H0, origin/HEAD points to origin/main, git log origin/main..HEAD lists two commits and git status shows one modified tracked file. Describe setup without executing anything.",
+      "expected_output": "Resolve the base to origin/main, warn that the uncommitted change is not reviewed and ask whether to continue, then create a non-shipping local-feat-a-fix task and local-feat-a-review-0, without asking for plan approval or any release grant, and spawn the Opus reviewer at H0.",
+      "files": [],
+      "expectations": [
+        "Uses origin/main as the base because no base was given.",
+        "Asks the human about the uncommitted change before spawning a reviewer.",
+        "Creates the local fix task with ships false and requests no release authorization or push.",
+        "Spawns the reviewer at H0 with model anthropic/claude-opus-5-5 passed explicitly."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Synthetic dry run. Local branch feat/a in /repo, H0 at start. After two fix rounds the final reviewer reports nothing open at or above major; the final fix commit is C2 on review-loop/local-feat-a-fix-2. feat/a still points at H0 and /repo has a modified file that C2 also changes. Describe how fixes land without executing anything.",
+      "expected_output": "Show git log H0..C2 and ask before landing; on yes confirm feat/a is still H0 and H0 is an ancestor of C2, try git merge --ff-only C2 in /repo, and when it refuses because of the local change, leave the fix branch and report its name without stashing, resetting or forcing.",
+      "files": [],
+      "expectations": [
+        "Asks the human with ask_user before changing feat/a.",
+        "Checks that feat/a still points at H0 and that H0 is an ancestor of C2.",
+        "Uses only a fast-forward and never stashes, resets or forces when the checkout has conflicting changes.",
+        "Pushes nothing and reports the fix branch name for manual merging."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Synthetic dry run in request-scoped mode. I ask: ‘Run the review loop on PR 42 and fix the major findings.’ My AGENTS.md treats a request to change my identified existing PR as a push request. PR 42 is open on my unprotected, non-default branch feat/x at H0. Its head repository matches the sole origin push URL https://example.test/user/project.git. The canonical repo is /home/user/project. Outline the new eligible root fixer's setup and landing. Do not execute anything.",
+      "expected_output": "Bind the PR head push and exact fix plan in one upfront TUI dialog, verify the final commit and use coordinator-only scoped push once without another prompt.",
+      "files": [],
+      "expectations": [
+        "Counts the human's explicit change request as push intent under the stated policy, not because a PR was mentioned or a review loop was invoked.",
+        "Proposes the fix plan through orchestrator_request with the canonical repoPath, origin and refs/heads/feat/x, binding the resolved URL in the same genuine TUI dialog.",
+        "Verifies the exact final commit, checks the unchanged head, uses claim and check as coordinator and records the observed remote and PR head without another prompt or a PR grant."
+      ]
+    }
+  ]
+}
